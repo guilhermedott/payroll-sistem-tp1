@@ -1,0 +1,44 @@
+{
+  "employees": [
+    {
+      "name": "Ana",
+      "role": "dev",
+      "salary": 5000,
+      "hours": 170,
+      "bonus": true,
+      "department": "engineering"
+    },
+    {
+      "name": "Carlos",
+      "role": "manager",
+      "salary": 9000,
+      "hours": 185,
+      "bonus": true,
+      "department": "management"
+    },
+    {
+      "name": "Bruna",
+      "role": "support",
+      "salary": 3200,
+      "hours": 160,
+      "bonus": false,
+      "department": "operations"
+    },
+    {
+      "name": "Diego",
+      "role": "dev",
+      "salary": 6200,
+      "hours": 190,
+      "bonus": true,
+      "department": "engineering"
+    },
+    {
+      "name": "Eduarda",
+      "role": "support",
+      "salary": 3000,
+      "hours": 150,
+      "bonus": true,
+      "department": "operations"
+    }
+  ]
+}
