@@ -41,3 +41,17 @@ def department_summary():
             result[department] = 0
         result[department] = result[department] + calculate_final_salary(employee)
     return result
+
+def get_total_company_cost():
+    snapshot = payroll_snapshot()
+    return sum(employee["final_salary"] for employee in snapshot)
+
+def get_role_counts():
+    snapshot = payroll_snapshot()
+    result = {}
+    for employee in snapshot:
+        role = employee["role"]
+        if role not in result:
+            result[role] = 0
+        result[role] = result[role] + 1
+    return result

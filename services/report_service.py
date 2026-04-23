@@ -1,16 +1,9 @@
-from services.payroll_service import payroll_snapshot, department_summary
-
+from services.payroll_service import payroll_snapshot, department_summary, get_total_company_cost, get_role_counts
 def print_payroll():
     print("=== PAYROLL REPORT ===")
-    total_company = 0
-    by_role = {}
+    total_company = get_total_company_cost()
+    by_role = get_role_counts()
     for employee in payroll_snapshot():
-        total_company = total_company + employee["final_salary"]
-
-        if employee["role"] not in by_role:
-            by_role[employee["role"]] = 0
-        by_role[employee["role"]] = by_role[employee["role"]] + 1
-
         print("Name:", employee["name"])
         print("Role:", employee["role"])
         print("Department:", employee["department"])
