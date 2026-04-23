@@ -13,11 +13,3 @@ def apply_tax(total):
         return total - (total * MEDIUM_TAX_RATE)
     else:
         return total - (total * LOW_TAX_RATE)
-
-def apply_tax_again(total):
-    if total > HIGH_TAX_LIMIT:
-        return total - (total * HIGH_TAX_RATE)
-    elif total > MEDIUM_TAX_LIMIT:
-        return total - (total * MEDIUM_TAX_RATE)
-    else:
-        return total - (total * LOW_TAX_RATE)
