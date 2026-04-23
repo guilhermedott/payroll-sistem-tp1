@@ -1,11 +1,8 @@
 import json
 from config import DATA_FILE
 from services.tax_service import apply_tax
+from services.data_service import load_employees
 from utils.rules import role_bonus, overtime_adjustment, department_label
-
-def load_data():
-    with open(DATA_FILE, "r", encoding="utf-8") as f:
-        return json.load(f)
 
 def calculate_final_salary(employee):
     total = employee["salary"]
@@ -15,9 +12,9 @@ def calculate_final_salary(employee):
     return total
 
 def payroll_snapshot():
-    data = load_data()
+    data = load_employees()
     result = []
-    for employee in data["employees"]:
+    for employee in data:
         final_salary = calculate_final_salary(employee)
         classification = "standard"
         if final_salary > 7000:
@@ -36,9 +33,9 @@ def payroll_snapshot():
     return result
 
 def department_summary():
-    data = load_data()
+    data = load_employees()
     result = {}
-    for employee in data["employees"]:
+    for employee in data:
         department = employee["department"]
         if department not in result:
             result[department] = 0
