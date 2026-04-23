@@ -14,18 +14,11 @@ def calculate_final_salary(employee):
     total = apply_tax_again(total)
     return total
 
-def calculate_final_salary_again(employee):
-    total = employee["salary"]
-    total = total + role_bonus_again(employee["role"], employee["bonus"])
-    total = total + overtime_adjustment(employee["hours"])
-    total = apply_tax_again(total)
-    return total
-
 def payroll_snapshot():
     data = load_data()
     result = []
     for employee in data["employees"]:
-        final_salary = calculate_final_salary_again(employee)
+        final_salary = calculate_final_salary(employee)
         classification = "standard"
         if final_salary > 7000:
             classification = "high_cost"
