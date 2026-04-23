@@ -1,57 +1,57 @@
-import json
-from config import DATA_FILE
-from services.tax_service import apply_tax
 from services.data_service import load_employees
+from services.tax_service import apply_tax
 from utils.rules import role_bonus, overtime_adjustment, department_label
 
-def calculate_final_salary(employee):
-    total = employee["salary"]
-    total = total + role_bonus(employee["role"], employee["bonus"])
-    total = total + overtime_adjustment(employee["hours"])
-    total = apply_tax(total)
-    return total
+class PayrollService:
+    def __init__(self):
+        self.employees = load_employees()
 
-def payroll_snapshot():
-    data = load_employees()
-    result = []
-    for employee in data:
-        final_salary = calculate_final_salary(employee)
-        classification = "standard"
-        if final_salary > 7000:
-            classification = "high_cost"
-        elif final_salary < 3000:
-            classification = "low_cost"
+    def calculate_final_salary(self, employee):
+        total = employee["salary"]
+        total = total + role_bonus(employee["role"], employee["bonus"])
+        total = total + overtime_adjustment(employee["hours"])
+        total = apply_tax(total)
+        return total
 
-        result.append({
-            "name": employee["name"],
-            "role": employee["role"],
-            "department": department_label(employee["department"]),
-            "base_salary": employee["salary"],
-            "final_salary": final_salary,
-            "classification": classification
-        })
-    return result
+    def payroll_snapshot(self):
+        result = []
+        for employee in self.employees:
+            final_salary = self.calculate_final_salary(employee)
+            classification = "standard"
+            if final_salary > 7000:
+                classification = "high_cost"
+            elif final_salary < 3000:
+                classification = "low_cost"
 
-def department_summary():
-    data = load_employees()
-    result = {}
-    for employee in data:
-        department = employee["department"]
-        if department not in result:
-            result[department] = 0
-        result[department] = result[department] + calculate_final_salary(employee)
-    return result
+            result.append({
+                "name": employee["name"],
+                "role": employee["role"],
+                "department": department_label(employee["department"]),
+                "base_salary": employee["salary"],
+                "final_salary": final_salary,
+                "classification": classification
+            })
+        return result
 
-def get_total_company_cost():
-    snapshot = payroll_snapshot()
-    return sum(employee["final_salary"] for employee in snapshot)
+    def department_summary(self):
+        result = {}
+        for employee in self.employees:
+            department = employee["department"]
+            if department not in result:
+                result[department] = 0
+            result[department] = result[department] + self.calculate_final_salary(employee)
+        return result
 
-def get_role_counts():
-    snapshot = payroll_snapshot()
-    result = {}
-    for employee in snapshot:
-        role = employee["role"]
-        if role not in result:
-            result[role] = 0
-        result[role] = result[role] + 1
-    return result
+    def get_total_company_cost(self):
+        snapshot = self.payroll_snapshot()
+        return sum(employee["final_salary"] for employee in snapshot)
+
+    def get_role_counts(self):
+        snapshot = self.payroll_snapshot()
+        result = {}
+        for employee in snapshot:
+            role = employee["role"]
+            if role not in result:
+                result[role] = 0
+            result[role] = result[role] + 1
+        return result
