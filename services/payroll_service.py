@@ -1,7 +1,7 @@
 import json
 from config import DATA_FILE
 from services.tax_service import apply_tax
-from utils.rules import role_bonus_again, overtime_adjustment, department_label
+from utils.rules import role_bonus, overtime_adjustment, department_label
 
 def load_data():
     with open(DATA_FILE, "r", encoding="utf-8") as f:
@@ -9,7 +9,7 @@ def load_data():
 
 def calculate_final_salary(employee):
     total = employee["salary"]
-    total = total + role_bonus_again(employee["role"], employee["bonus"])
+    total = total + role_bonus(employee["role"], employee["bonus"])
     total = total + overtime_adjustment(employee["hours"])
     total = apply_tax(total)
     return total
