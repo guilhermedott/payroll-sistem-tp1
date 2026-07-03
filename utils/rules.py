@@ -14,11 +14,17 @@ def overtime_adjustment(hours):
         return -100
     return 0
 
+DEPARTMENT_LABELS = {
+    "engineering": "Engineering",
+    "management": "Management",
+    "operations": "Operations",
+}
+
 def department_label(department):
-    if department == "engineering":
-        return "Engineering"
-    elif department == "management":
-        return "Management"
-    elif department == "operations":
-        return "Operations"
-    return "Other"
+    # Missing/empty/non-string department -> explicit "Not informed" label.
+    # This keeps reports from crashing or silently mixing these employees
+    # with the generic "Other" bucket used for unknown-but-present values.
+    if not isinstance(department, str) or not department.strip():
+        return "Not informed"
+
+    return DEPARTMENT_LABELS.get(department, "Other")
